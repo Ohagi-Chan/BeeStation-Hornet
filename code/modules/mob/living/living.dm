@@ -1285,6 +1285,9 @@
 	. = ..()
 
 /mob/living/proc/mob_pickup(mob/living/L)
+	if(resting)
+		resting = FALSE
+		update_resting()
 	var/obj/item/clothing/head/mob_holder/holder = new(get_turf(src), src, held_state, head_icon, held_lh, held_rh, worn_slot_flags)
 	L.visible_message("<span class='warning'>[L] scoops up [src]!</span>")
 	L.put_in_hands(holder)
@@ -1380,3 +1383,8 @@
 			STAMINA:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[getStaminaLoss()]</a>
 		</font>
 	"}
+
+/mob/living/eminence_act(mob/living/simple_animal/eminence/eminence)
+	if(is_servant_of_ratvar(src))
+		eminence.selected_mob = src
+		to_chat(eminence, "<span class='brass'>You select [src].</span>")
